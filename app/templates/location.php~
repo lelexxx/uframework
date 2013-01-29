@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>A location</title>
+	</head>
+	<body>
+		<?= $location ?>
+		
+		<form action="/location/" method="post">
+			<input type="hidden" name="locationId" value="<?= $id ?>"/>
+			<input type="hidden" name="_method" value="PUT">
+			<input type="text" name="locationName" value="<?= $location ?>"/>
+			<input type="submit" value="Update it" />
+		</form>
+		
+		<a href="/locations">Back</a>
+	</body>
+</html>

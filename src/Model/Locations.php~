@@ -1,0 +1,104 @@
+<?php
+
+namespace Model;
+
+class Locations implements FinderInterface, PersistenceInterface
+{	
+	/** Collection of locations. */
+	protected $locations = array(0 => "Totoland", 1 => "San Francisco", 2 => "Babooland");
+	
+	/** Add a location.
+	*
+	* @param mixed $value
+	*/
+	public function create($value)
+	{
+		$this->location[$id] = $value;
+	}
+	
+	/** Delete a location by its id.
+	*
+	* @param mixed $id
+	*/
+	public function delete($id)
+	{
+		if(!array_key_exists($id, $this->location))
+			throw new \Exception\HttpException(404, "Location not foud");
+		
+		//on retire l'élément du tableau
+		unset($this->locations[$id]);
+		//on recole les éléments pour combler l'éventuel trou
+		$this->locations = array_values($this->locations);
+	}
+	
+	/** Return all elements.
+	*
+	*@return array
+	*/
+	public function findAll()
+	{
+		return $this->locations;
+	}
+	
+	/** Retrieve an element by its id.
+	*
+	* @param mixed $id
+	* @return null|mixed
+	*/
+	public function findOneById($id)
+	{
+		/*if(!array_key_exists($id, $this->location))
+			throw new \Exception\HttpException(404, "Location not foud");*/
+
+		return $this->locations[$id];
+	}
+
+	/** Get the location in array format by a json format.
+	*
+	* @return array 
+	*/
+	public function getArrayWithJson($jsonFile = "locations.txt")
+	{
+		$fp = fopen($jsonFile,"r"); //lecture du fichier
+
+		while (!feof($fp)) //on parcourt toutes les lignes
+		{ 
+		  $json .= fgets($fp, 4096); // lecture du contenu de la ligne
+		}
+		return json_decode($json);
+	}
+	
+	/** Get the location in JSon format.
+	*
+	* @return String 
+	*/
+	public function getJson()
+	{
+		return json_encode($this->location);
+	}
+	
+	/** Save the locations in a file, on JSon format
+	*
+	*/
+	public function saveOnJson()
+	{
+		$locJson = $this->getJson();
+
+		$fp = fopen (__DIR__."locations.txt", "r+");  
+		fputs($fp, $locJson);  
+		fclose($fp);  
+	}
+	
+	/** Update a location by its id
+	*
+	* @param mixed $id
+	* @param mixed $value
+	*/
+	public function update($id, $value)
+	{
+		if(!array_key_exists($id, $this->location))
+			return NULL;
+			
+		$this->location[$id] = $value;
+	}
+}
