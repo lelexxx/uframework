@@ -1,8 +1,9 @@
 <?php
 
-/**
+/** 
+* @file Locations.php
 *
-* @author Ruiz Alexandre <rruiz.alex@gmail.com>
+* @author Ruiz Alexandre <rruiz.alex@gmail.com>, Muetton Julien, Durand William
 */
 
 namespace Model;
@@ -11,7 +12,7 @@ class Locations implements FinderInterface, PersistenceInterface
 {	
 	private $datafile;
 	
-	private Database $database;
+	private $database;
 
 	/** Collection of locations. */
 	protected $locations = array();//0 => "Totoland", 1 => "San Francisco", 2 => "Babooland");
@@ -23,8 +24,9 @@ class Locations implements FinderInterface, PersistenceInterface
 		
 		$array = $this->getArrayWithJson();
 		
-		if(!empty($array))
+		if(!empty($array)){
 			$this->locations = $array;
+		}
 	}
 	
 	/** Add a location.
@@ -44,9 +46,7 @@ class Locations implements FinderInterface, PersistenceInterface
 	*/
 	public function delete($id)
 	{		
-		//on retire l'élément du tableau
 		unset($this->locations[$id]);
-		//on recole les éléments pour combler l'éventuel trou
 		$this->locations = array_values($this->locations);
 		
 		$this->saveOnJson();

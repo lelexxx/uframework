@@ -1,5 +1,11 @@
 <?php
 
+/** 
+* @file Comment.php
+*
+* @author Ruiz Alexandre <rruiz.alex@gmail.com>
+*/
+
 userNamespace Model;
 
 class Comment

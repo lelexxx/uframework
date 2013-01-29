@@ -1,5 +1,11 @@
 <?php
 
+/** 
+* @file HttpException.php
+*
+* @author Muetton Julien, Durand William
+*/
+
 namespace Exception;
 
 class HttpException extends \RuntimeException

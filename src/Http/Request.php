@@ -1,13 +1,19 @@
 <?php
 
+/** 
+* @file Request.php
+*
+* @author Ruiz Alexandre <rruiz.alex@gmail.com>, Muetton Julien, Durand William
+*/
+
 namespace Http;
 
 class Request
 {
 	const GET    = 'GET';
-    	const POST   = 'POST';
-    	const PUT    = 'PUT';
-    	const DELETE = 'DELETE';
+	const POST   = 'POST';
+	const PUT    = 'PUT';
+	const DELETE = 'DELETE';
 	
 	private $parameters = array();
 	

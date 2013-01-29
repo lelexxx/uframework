@@ -1,5 +1,11 @@
 <?php
 
+/** 
+* @file TemplateEngine.php
+*
+* @author Muetton Julien, Durand William
+*/
+
 namespace View;
 
 class TemplateEngine implements TemplateEngineInterface

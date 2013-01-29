@@ -1,5 +1,11 @@
 <?php
 
+/** 
+* @file FinderInterface.php
+*
+* @author Muetton Julien, Durand William
+*/
+
 namespace Model;
 
 interface FinderInterface

@@ -1,5 +1,11 @@
 <?php
 
+/** 
+* @file Response.php
+*
+* @author Muetton Julien, Durand William
+*/
+
 namespace Http;
 
 class Response

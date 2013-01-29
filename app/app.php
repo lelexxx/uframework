@@ -5,13 +5,13 @@ require __DIR__ . '/../autoload.php';
 use Http\Request;
 use Model\Locations;
 use Exception\HttpException;
-use Mode\Database
+use Model\Database;
 
 // Config
 $debug = true;
 
 $app = new \App(new \View\TemplateEngine(__DIR__ . '/templates/'), $debug);
-$database = Database::getMysqlInstance();
+$database = new Database();
 
 /**
  * Index
@@ -22,7 +22,7 @@ $app->get('/', function () use ($app)
 	});
 
 // Récupère la liste des locations
-$app->get('/locations', function(Request $request) use ($app)
+$app->get('/locations', function(Request $request) use ($app, $database)
 	{
 		$model = new Locations($database);
 		$loc = $model->findAll();
@@ -31,61 +31,62 @@ $app->get('/locations', function(Request $request) use ($app)
 	});
 	
 //Récupère une location
-$app->get('/locations/(\d+)', function(Request $request, $id) use ($app)
+$app->get('/locations/(\d+)', function(Request $request, $id) use ($app, $database)
 	{
 		$model = new Locations($database);
 		$loc = $model->findOneById($id);
 		
-		if(NULL === $loc)
-			throw new HttpException(404, "Location not found"); //si elle existe pas on emet une exception
-
+		if(NULL === $loc){
+			throw new HttpException(404, "Location not found");
+		}
 
 		return $app->render('location.php', array("id" => $id, "location" => $loc));
-		//return $app->render('location.php', array("location" => $loc));
 	});
 	
 //Ajoute une location
-$app->post('/locations', function(Request $request) use ($app)
+$app->post('/locations', function(Request $request) use ($app, $database)
 	{
-		if(empty($_POST['locationName'])) //$request->getParamter('name')
-			throw new HttpException(400, "Name parameter is mandatory !"); //si elle existe pas on emet une exception
+		if(empty($_POST['locationName'])){
+			throw new HttpException(400, "Name parameter is mandatory !");
+		}
 			
 		$model = new Locations($database);
-		$model->create($_POST['locationName']); //on ajoute la location
+		$model->create($_POST['locationName']);
 		
-		$app->redirect('/locations'); //nouvelle méthode de redirection
+		$app->redirect('/locations');
 	});
 	
 //Supprime une location
-$app->delete('/locations/(\d+)', function(Request $request, $id) use ($app)
+$app->delete('/locations/(\d+)', function(Request $request, $id) use ($app, $database)
 	{
 		$model = new Locations($database);
-		$loc = $model->findOneById($id); //on regarde si la location existe
+		$loc = $model->findOneById($id);
 		
-		if(NULL === $loc)
-			throw new HttpException(404, "Location not found"); //si elle existe pas on emet une exception
+		if(NULL === $loc){
+			throw new HttpException(404, "Location not found");
+		}
 
-		$model->delete($id); //on l'a supprime
+		$model->delete($id);
 		
-		$app->redirect('/locations'); //nouvelle méthode de redirection
+		$app->redirect('/locations');
 	});
 	
 //Met à jour une location
-$app->put('/locations/(\d+)', function(Request $request, $id) use ($app)
+$app->put('/locations/(\d+)', function(Request $request, $id) use ($app, $database)
 	{
 		$model = new Locations($database);
-		$loc = $model->findOneById($id); //on regarde si la location existe
+		$loc = $model->findOneById($id);
 		
 		if(NULL === $loc){
-			throw new HttpException(404, "Location not found"); //si elle existe pas on emet une exception
+			throw new HttpException(404, "Location not found");
 		}
 			
-		if(empty($_POST['locationName'])){ //$request->getParamter('name')
-			throw new HttpException(400, "Name parameter is mandatory !"); //si elle existe pas on emet une exception
+		if(empty($_POST['locationName'])){
+			throw new HttpException(400, "Name parameter is mandatory !");
 		}
 
-		$model->update($_POST['locationId'], $_POST['locationName']); //met à jour la location
-		$loc = $model->findOneById($id); //on récupère la location MAJ
+		$model->update($_POST['locationId'], $_POST['locationName'])
+		$loc = $model->findOneById($id);
 
 		return $app->render('location.php', array("id" => $id, "location" => $loc));
 	});

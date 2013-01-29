@@ -1,5 +1,11 @@
 <?php
 
+/** 
+* @file Location.php
+*
+* @author Ruiz Alexandre <rruiz.alex@gmail.com>
+*/
+
 namespace Model;
 
 class Location
@@ -16,7 +22,7 @@ class Location
 	* @param name String
 	* @param createdAt DateTime|NULL
 	*/
-	public function __construct($id, $name, DateTime $createdAt = NULL)
+	public function __construct($id, $name, DateTime $createdAt = null)
 	{
 		$this->id = $id;
 		$this->name = $name;

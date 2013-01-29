@@ -1,5 +1,11 @@
 <?php
 
+/** 
+* @file PersistenceInterface.php
+*
+* @author Muetton Julien, Durand William
+*/
+
 namespace Model;
 
 interface PersistenceInterface
