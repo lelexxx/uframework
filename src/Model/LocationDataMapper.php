@@ -8,6 +8,6 @@
 
 namespace Model;
 
-class LocationDataMapper
+class LocationDataMapper implements DataMapperInterface
 {
 }
