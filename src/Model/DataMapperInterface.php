@@ -10,4 +10,7 @@ namespace Model;
 
 interface DataMapperInterface
 {
+	public function persist(Object $object);
+	
+	public function remove(Object $object);
 }
