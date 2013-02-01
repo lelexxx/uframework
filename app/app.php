@@ -85,7 +85,7 @@ $app->put('/locations/(\d+)', function(Request $request, $id) use ($app, $databa
 			throw new HttpException(400, "Name parameter is mandatory !");
 		}
 
-		$model->update($_POST['locationId'], $_POST['locationName'])
+		$model->update($_POST['locationId'], $_POST['locationName']);
 		$loc = $model->findOneById($id);
 
 		return $app->render('location.php', array("id" => $id, "location" => $loc));
