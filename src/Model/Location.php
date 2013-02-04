@@ -3,7 +3,7 @@
 /** 
 * @file Location.php
 *
-* @author Ruiz Alexandre <rruiz.alex@gmail.com>
+* @author Ruiz Alexandre <rruiz.alex@gmail.com> && Mathieu Valcourt
 */
 
 namespace Model;
@@ -16,16 +16,19 @@ class Location
 	
 	private $createdAt;
 	
+	private $comments = array();
+	
 	/**
 	*
 	* @param id int
 	* @param name String
 	* @param createdAt DateTime|NULL
 	*/
-	public function __construct($id, $name, DateTime $createdAt = null)
+	public function __construct($id, $name, array $comments = array(), DateTime $createdAt = null)
 	{
 		$this->id = $id;
 		$this->name = $name;
+		$this->comments = $comments;
 		$this->createdAt = $createdAt;
 	}
 	
@@ -81,5 +84,35 @@ class Location
 	public function setCreatedAt($createdAt)
 	{
 		$this->createdAt = $createdAt;
+	}
+	
+	/** To get the comments.
+	*
+	* @return array
+	*/
+	public function getComments()
+	{
+		return $this->comments;
+	}
+	
+	/** To set the comments.
+	*
+	* @param array
+	*/
+	public function setComments(array $comments)
+	{
+		$this->comments = $comments;
+	}
+	
+	/** To test if the location is new
+	*
+	*@return boolean
+	*/
+	public function isNew()
+	{
+		if($this->id != null)
+			return true;
+			
+		return false;
 	}
 }

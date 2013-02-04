@@ -3,7 +3,7 @@
 /** 
 * @file Comment.php
 *
-* @author Ruiz Alexandre <rruiz.alex@gmail.com>
+* @author Ruiz Alexandre <rruiz.alex@gmail.com> && Mathieu Valcourt
 */
 
 userNamespace Model;
@@ -102,5 +102,17 @@ class Comment
 	public function setCreatedAt($createdAt)
 	{
 		$this->createdAt = $createdAt;
+	}
+	
+	/** To test if the comment is new
+	*
+	*@return boolean
+	*/
+	public function isNew()
+	{
+		if($this->id != null)
+			return true;
+			
+		return false;
 	}
 }
