@@ -24,7 +24,7 @@ class Location
 	* @param name String
 	* @param createdAt DateTime|NULL
 	*/
-	public function __construct($id, $name, array $comments = array(), DateTime $createdAt = null)
+	public function __construct($id = null, $name, array $comments = array(), DateTime $createdAt = null)
 	{
 		$this->id = $id;
 		$this->name = $name;
@@ -81,7 +81,7 @@ class Location
 	*
 	* @param DateTime
 	*/
-	public function setCreatedAt($createdAt)
+	public function setCreatedAt($createdAt = null)
 	{
 		$this->createdAt = $createdAt;
 	}
@@ -110,7 +110,7 @@ class Location
 	*/
 	public function isNew()
 	{
-		if($this->id != null)
+		if(null === $this->id)
 			return true;
 			
 		return false;

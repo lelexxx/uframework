@@ -1,1 +1,1 @@
-["Baboolands","Totolands","Totolands"]
+["Babooland","Totoland"]

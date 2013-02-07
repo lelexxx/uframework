@@ -6,11 +6,13 @@
 * @author Ruiz Alexandre <rruiz.alex@gmail.com> && Mathieu Valcourt
 */
 
-userNamespace Model;
+Namespace Model;
 
 class Comment
 {
 	private $id;
+	
+	private $idLocation;
 	
 	private $userName;
 	
@@ -24,9 +26,10 @@ class Comment
 	* @param userName String
 	* @param createdAt DateTime|NULL
 	*/
-	public function __construct($id, $userName, $body, DateTime $createdAt = NULL)
+	public function __construct($id, $idLocation, $userName, $body, DateTime $createdAt = NULL)
 	{
 		$this->id = $id;
+		$this->idLocation = $idLocation;
 		$this->userName = $userName;
 		$this->body = $body;
 		$this->createdAt = $createdAt;
@@ -48,6 +51,24 @@ class Comment
 	public function setId($id)
 	{
 		$this->id = $id;
+	}
+	
+	/** To get the id.
+	*
+	* @return int
+	*/
+	public function getIdLocation()
+	{
+		return $this->idLocation;
+	}
+	
+	/** To set the id.
+	*
+	* @param int
+	*/
+	public function setIdLocation($idLocation)
+	{
+		$this->idLocation = $idLocation;
 	}
 	
 	/** To get the userName.
@@ -110,9 +131,10 @@ class Comment
 	*/
 	public function isNew()
 	{
-		if($this->id != null)
+		if(null === $this->id)
 			return true;
 			
 		return false;
+	
 	}
 }
