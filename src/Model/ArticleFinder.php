@@ -10,15 +10,17 @@ namespace Model;
 
 class ArticleFinder implements FinderInterface, PersistenceInterface
 {	
-	private $datafile = '/data/article.txt';
+	private $datafile;
 	
 	private $this->articles[];
 
 	/** Collection of locations. */
 	protected $locations = array();
 	
-	public function __construct()
+	public function __construct($datafile = '/data/article.txt')
 	{		
+		$this->datafile = $datafile;
+		
 		$array = $this->getArrayWithJson();
 		
 		foreach($array as $id => $locationName)
