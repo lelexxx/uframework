@@ -10,7 +10,7 @@ namespace Model;
 
 class ArticleFinder implements FinderInterface, PersistenceInterface
 {	
-	private $datafile;
+	private $datafile = '/data/article.txt';
 	
 	private $this->articles[];
 
