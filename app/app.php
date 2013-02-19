@@ -3,124 +3,103 @@
 require __DIR__ . '/../autoload.php';
 
 use Http\Request;
-use DAL\DataBase;
-use Mapper\LocationDataMapper;
-use Mapper\CommentDataMapper;
-use Model\Comment;
-use Model\Location;
-use Model\LocationFinder;
-use Model\CommentFinder;
+use Model\ArticleFinder;
 use Exception\HttpException;
 
 // Config
 $debug = true;
 
 $app = new \App(new \View\TemplateEngine(__DIR__ . '/templates/'), $debug);
-$database = new Database();
 
 /**
  * Index
  */
 $app->get('/', function () use ($app)
 	{
-		return $app->redirect('/locations');
+		return $app->redirect('/articles');
 	});
 
-// Récupère la liste des locations
-$app->get('/locations', function(Request $request) use ($app, $database)
+// Récupère la liste des articles
+$app->get('/articles', function(Request $request) use ($app)
 	{
-		$model = new LocationFinder($database);
-		$loc = $model->findAll();
+		$model = new ArticleFinder();
+		$art = $model->findAll();
 		
-		return $app->render('locations.php', array("locations" => $loc));
+		return $app->render('articles.php', array("articles" => $art));
 	});
 	
-//Récupère une location
-$app->get('/locations/(\d+)', function(Request $request, $id) use ($app, $database)
+//Récupère une article
+$app->get('/articles/(\d+)', function(Request $request, $id) use ($app)
 	{
-		$locationMapper = new LocationFinder($database);
-		$loc = $locationMapper->findOneById($id);
+		$model = new ArticleFinder();
+		$art = $model->findOneById($id);
 		
-		if(NULL === $loc){
-			throw new HttpException(404, "Location not found");
+		if(null === $art){
+			throw new HttpException(404, "Article not found");
 		}
-		
-		$commentMapper = new CommentFinder($database);
-		$loc->setComments($commentMapper->findAllByIdLocation($loc->getId()));
 
-		return $app->render('location.php', array("id" => $id, "location" => $loc));
+		return $app->render('article.php', array("id" => $id, "article" => $art));
 	});
 	
-//Ajoute une location
-$app->post('/locations', function(Request $request) use ($app, $database)
+//Ajoute une article
+$app->post('/articles', function(Request $request) use ($app)
 	{
-		if(empty($_POST['locationName'])){
+		$articleName = $request->getParameter('articleName', null);
+		
+		if(null === $articleName){
 			throw new HttpException(400, "Name parameter is mandatory !");
 		}
-			
-		$model = new LocationDataMapper($database);
-		$model->persist(new Location(null, $_POST['locationName']));
 		
-		$app->redirect('/locations');
-	});
-	
-//Supprime une location
-$app->delete('/locations/(\d+)', function(Request $request, $id) use ($app, $database)
-	{
-		$model = new LocationFinder($database);
-		$loc = $model->findOneById($id);
+		$articleContent = $request->getParameter('articleContent', null);
 		
-		if(NULL === $loc){
-			throw new HttpException(404, "Location not found");
-		}
-
-		$mapper = new LocationDataMapper($database);
-		$mapper->remove($loc);
-		
-		$app->redirect('/locations');
-	});
-	
-//Met à jour une location
-$app->put('/locations/(\d+)', function(Request $request, $id) use ($app, $database)
-	{
-		$model = new LocationFinder($database);
-		$loc = $model->findOneById($id);
-		
-		if(NULL === $loc){
-			throw new HttpException(404, "Location not found");
+		if(null === $articleContent){
+			throw new HttpException(400, "Content parameter is mandatory !");
 		}
 			
-		if(empty($_POST['locationName'])){
-			throw new HttpException(400, "Name parameter is mandatory !");
-		}
-
-		$mapper = new LocationDataMapper($database);
-		$mapper->update(new Location($_POST['locationId'], $_POST['locationName']));
+		$model = new ArticleFinder();
+		$model->create($articleName);
 		
-		$loc = $model->findOneById($id);
-
-		return $app->render('location.php', array("id" => $id, "location" => $loc, "comments" => array()));
+		$app->redirect('/articles');
 	});
 	
-//Ajoute un commentaire
-$app->post('/comments', function(Request $request) use ($app, $database)
+//Supprime une article
+$app->delete('/articles/(\d+)', function(Request $request, $id) use ($app)
 	{
-		if(empty($_POST['commentBody'])){
-			throw new HttpException(400, "Body parameter is mandatory !");
+		$model = new ArticleFinder();
+		$art = $model->findOneById($id);
+		
+		if(null === $art){
+			throw new HttpException(404, "Article not found");
+		}
+
+		$model->delete($id);
+		
+		$app->redirect('/articles');
+	});
+	
+//Met à jour une article
+$app->put('/articles/(\d+)', function(Request $request, $id) use ($app)
+	{
+		$model = new ArticleFinder();
+		$art = $model->findOneById($id);
+		
+		if(null === $art){
+			throw new HttpException(404, "Article not found");
 		}
 		
-		if(empty($_POST['userName'])){
-			throw new HttpException(400, "User name parameter is mandatory !");
-		}
-		
-		if(empty($_POST['locationId'])){
-			throw new HttpException(400, "Id location is mandatory !");
-		}
-			
-		$mapper = new CommentDataMapper($database);
-		$mapper->persist(new Comment(null, $_POST['locationId'], $_POST['userName'], $_POST['commentBody']));
-		
-		//$app->redirect('/locations/'.$_POST['locationId']);
+		$articleName = $request->getParameter('articleName', $art->getName());
+		$articleContent = $request->getParameter('articleContent', $art->getContent());
+
+		$model->update($id, $articleName);
+		$art = $model->findOneById($id);
+
+		return $app->render('article.php', array("id" => $id, "article" => $art));
+	});
+
+//Accès à l'administration
+$app->get('/adminSite', function(Request $request) use ($app)
+	{
+		return $app->render('admin.php', array());
 	});
 
 return $app;

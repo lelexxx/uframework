@@ -111,20 +111,20 @@ class App
 
     public function run(Request $request = NULL)
     {
-	if (NULL === $request)
-	{
-		$request = Request::createFromGlobals();
-	}
-
-        $method = $request->getMethod();
-        $uri    = $request->getUri();
-
-        foreach ($this->routes as $route)
-	{
-            	if ($route->match($method, $uri))
+		if (NULL === $request)
 		{
-			return $this->process($request, $route);
+			$request = Request::createFromGlobals();
 		}
+
+			$method = $request->getMethod();
+			$uri    = $request->getUri();
+
+			foreach ($this->routes as $route)
+		{
+					if ($route->match($method, $uri))
+			{
+				return $this->process($request, $route);
+			}
         }
 
         throw new HttpException(404, 'Page Not Found !');
