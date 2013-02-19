@@ -7,6 +7,6 @@
 	<body>
 		<?= $article->getName(); ?>
 		
-		<a href="/articles">Back</a>
+		<br /><a href="/articles">Back</a>
 	</body>
 </html>

@@ -1,1 +1,1 @@
-["First Article" : "With this article I can say that my website is open."]
+["First Article", "Second Article"]

@@ -22,7 +22,7 @@ class Article
 	* @param name String
 	* @param createdAt String
 	*/
-	public function __construct($id, $name, $description)
+	public function __construct($id, $name, $description = '')
 	{
 		$this->id = $id;
 		$this->name = $name;
@@ -69,7 +69,7 @@ class Article
 	*
 	* @return String
 	*/
-	public function setDescription()
+	public function getDescription()
 	{
 		return $this->description;
 	}

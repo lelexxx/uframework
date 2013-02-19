@@ -12,19 +12,19 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
 {	
 	private $datafile;
 	
-	private $this->articles[];
+	private $articles = array();
 
 	/** Collection of locations. */
 	protected $locations = array();
 	
-	public function __construct($datafile = '/data/article.txt')
+	public function __construct($datafile = '/../../data/article.txt')
 	{		
-		$this->datafile = $datafile;
+		$this->datafile = __DIR__.''.$datafile;
 		
 		$array = $this->getArrayWithJson();
 		
-		foreach($array as $id => $locationName)
-				$this->locations[] = new Location($id, $locationName);
+		foreach($array as $id => $articleName)
+				$this->articles[] = new Article($id, $articleName);
 	}
 	
 	/** Add a location.
@@ -33,7 +33,7 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
 	*/
 	public function create($value)
 	{
-		$this->locations[] = new Location(count($this->locations), $value);
+		$this->articles[] = new Article(count($this->locations), $value);
 
 		$this->saveOnJson();
 	}
@@ -45,7 +45,7 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
 	public function delete($id)
 	{		
 		unset($this->locations[$id]);
-		$this->locations = array_values($this->locations);
+		$this->articles = array_values($this->locations);
 		
 		$this->saveOnJson();
 	}
@@ -88,7 +88,7 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
 	{
 		$array = array();
 		
-		foreach($this->locations as $id => $location)
+		foreach($this->articles as $id => $location)
 				$array[] = $location->getName();
 				
 		return json_encode($array);
