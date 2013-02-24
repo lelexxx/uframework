@@ -98,6 +98,6 @@ class Route
 
     private function compilePattern()
     {
-        return sprintf('#^%s$#', $this->pattern);
+        return sprintf('#^%s/?$#', $this->pattern);
     }
 }

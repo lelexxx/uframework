@@ -22,7 +22,11 @@ class Article
 	* @param name String
 	* @param createdAt String
 	*/
+<<<<<<< HEAD
 	public function __construct($id, $name, $description = '')
+=======
+	public function __construct($id = null, $name, $description = '')
+>>>>>>> fix bug and add authentification access
 	{
 		$this->id = $id;
 		$this->name = $name;
@@ -65,7 +69,11 @@ class Article
 		$this->name = $name;
 	}
 	
+<<<<<<< HEAD
 	/** To get the createdAt field.
+=======
+	/** To get the description field.
+>>>>>>> fix bug and add authentification access
 	*
 	* @return String
 	*/
@@ -74,7 +82,11 @@ class Article
 		return $this->description;
 	}
 	
+<<<<<<< HEAD
 	/** To set the createdAt field.
+=======
+	/** To set the description field.
+>>>>>>> fix bug and add authentification access
 	*
 	* @param String
 	*/

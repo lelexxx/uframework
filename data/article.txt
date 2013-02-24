@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 ["First Article", "Second Article"]
+=======
+[
+	[
+		{"name" : "Mon premier article"}, 
+		{"description" : "Bonjour &agrave; tous, j'ai enfin pris la d&eacute;cision d'ouvrir mon site. Au travers de ce derniers vous pourrez d&eacute;couvrir mes r&eacute;alisation ainsi que les diff&eacute;rents sujets qui m'int&eacute;resse."}
+	]
+]
+>>>>>>> fix bug and add authentification access

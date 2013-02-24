@@ -2,35 +2,59 @@
 
 require __DIR__ . '/../autoload.php';
 
+//Use
 use Http\Request;
 use Model\ArticleFinder;
 use Exception\HttpException;
 
 // Config
 $debug = true;
-
 $app = new \App(new \View\TemplateEngine(__DIR__ . '/templates/'), $debug);
 
-/**
- * Index
- */
-$app->get('/', function () use ($app)
-	{
+//Define routes which don't require authentification
+$app->addListener('process.before', function(Request $req) use ($app) {
+    session_start();
+
+    $allowed = [
+		'/' => [ Request::GET ],
+        '/login' => [ Request::GET ],
+        '/articles' => [ Request::GET ],
+        '/articles/(\d+)' => [ Request::GET ],
+    ];
+
+    if (isset($_SESSION['is_authenticated']) && true === $_SESSION['is_authenticated']){
+        return;
+    }
+
+    foreach ($allowed as $pattern => $methods) {
+        if (preg_match(sprintf('#^%s/?$#', $pattern), $req->getUri()) && in_array($req->getMethod(), $methods)) {
+            return;
+        }
+    }
+
+    switch ($req->guessBestFormat()) {
+        case 'json':
+            throw new HttpException(401);
+    }
+    
+    throw new HttpException(401);
+});
+
+//Index
+$app->get('/', function () use ($app){
 		return $app->redirect('/articles');
 	});
 
-// Récupère la liste des articles
-$app->get('/articles', function(Request $request) use ($app)
-	{
+// Get article list
+$app->get('/articles', function(Request $request) use ($app){
 		$model = new ArticleFinder();
 		$art = $model->findAll();
 		
 		return $app->render('articles.php', array("articles" => $art));
 	});
 	
-//Récupère une article
-$app->get('/articles/(\d+)', function(Request $request, $id) use ($app)
-	{
+//Get one article with its id
+$app->get('/articles/(\d+)', function(Request $request, $id) use ($app){
 		$model = new ArticleFinder();
 		$art = $model->findOneById($id);
 		
@@ -41,30 +65,28 @@ $app->get('/articles/(\d+)', function(Request $request, $id) use ($app)
 		return $app->render('article.php', array("id" => $id, "article" => $art));
 	});
 	
-//Ajoute une article
-$app->post('/articles', function(Request $request) use ($app)
-	{
+//Add an article
+$app->post('/articles', function(Request $request) use ($app){
 		$articleName = $request->getParameter('articleName', null);
 		
 		if(null === $articleName){
 			throw new HttpException(400, "Name parameter is mandatory !");
 		}
 		
-		$articleContent = $request->getParameter('articleContent', null);
+		$articleContent = $request->getParameter('articleContent', '');
 		
 		if(null === $articleContent){
 			throw new HttpException(400, "Content parameter is mandatory !");
 		}
 			
 		$model = new ArticleFinder();
-		$model->create($articleName);
+		$model->create(new Article(null, $articleName, $articleContent));
 		
 		$app->redirect('/articles');
 	});
 	
-//Supprime une article
-$app->delete('/articles/(\d+)', function(Request $request, $id) use ($app)
-	{
+//Delete an article
+$app->delete('/articles/(\d+)', function(Request $request, $id) use ($app){
 		$model = new ArticleFinder();
 		$art = $model->findOneById($id);
 		
@@ -77,9 +99,8 @@ $app->delete('/articles/(\d+)', function(Request $request, $id) use ($app)
 		$app->redirect('/articles');
 	});
 	
-//Met à jour une article
-$app->put('/articles/(\d+)', function(Request $request, $id) use ($app)
-	{
+//Update an article
+$app->put('/articles/(\d+)', function(Request $request, $id) use ($app){
 		$model = new ArticleFinder();
 		$art = $model->findOneById($id);
 		
@@ -96,9 +117,24 @@ $app->put('/articles/(\d+)', function(Request $request, $id) use ($app)
 		return $app->render('article.php', array("id" => $id, "article" => $art));
 	});
 
-//Accès à l'administration
-$app->get('/adminSite', function(Request $request) use ($app)
-	{
+//Access to the login form
+$app->get('/login', function(Request $request) use ($app){
+		return $app->render('login.php', array());
+	});
+	
+//Access to the administration
+$app->get('/admin', function(Request $request) use ($app){
+		$login = $request->getParameter('login', null);
+		$password = $request->getParameter('password', null);
+		
+		if(null === $login){
+			throw new HttpException(400, "Login is mandatory !");
+		}
+		
+		if(null === $password){
+			throw new HttpException(400, "Password is mandatory !");
+		}
+		
 		return $app->render('admin.php', array());
 	});
 

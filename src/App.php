@@ -9,6 +9,8 @@ use Http\Response;
 
 class App
 {
+	use \EventDispatcherTrait;
+	
     const GET    = 'GET';
     const POST   = 'POST';
     const PUT    = 'PUT';
@@ -116,12 +118,12 @@ class App
 			$request = Request::createFromGlobals();
 		}
 
-			$method = $request->getMethod();
-			$uri    = $request->getUri();
+		$method = $request->getMethod();
+		$uri    = $request->getUri();
 
-			foreach ($this->routes as $route)
+		foreach ($this->routes as $route)
 		{
-					if ($route->match($method, $uri))
+			if ($route->match($method, $uri))
 			{
 				return $this->process($request, $route);
 			}
@@ -135,27 +137,29 @@ class App
      */
     private function process(Request $request, Route $route)
     {
+		$this->dispatch('process.before', [ $request ]);
+		
         try
-	{
-            	http_response_code($this->statusCode);
-			
-		$arguments = $route->getArguments();
-		array_unshift($arguments, $request);
-	
-            	$response = call_user_func_array($route->getCallable(), $arguments);
-		if (!$response instanceof Response)
 		{
-		    $response = new Response($response);
-		}
+			http_response_code($this->statusCode);
+			
+			$arguments = $route->getArguments();
+			array_unshift($arguments, $request);
+		
+					$response = call_user_func_array($route->getCallable(), $arguments);
+			if (!$response instanceof Response)
+			{
+				$response = new Response($response);
+			}
 
-		$response->send();
+			$response->send();
         }
-	catch (HttpException $e)
-	{
-            	throw $e;
+		catch (HttpException $e)
+		{
+			throw $e;
         }
-	catch (\Exception $e)
-	{
+		catch (\Exception $e)
+		{
             throw new HttpException(500, null, $e);
         }
     }
@@ -163,7 +167,7 @@ class App
 	/**
 	*@param string $to
 	*/
-    	public function redirect($to, $statusCode = 302)
+	public function redirect($to, $statusCode = 302)
 	{
 	    http_response_code($statusCode);
 	    header(sprintf('Location: %s', $to));

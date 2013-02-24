@@ -2,8 +2,15 @@ Test it
 
     You can test it with php server embed like with this command : php -S localhost:8080 -t web/
 
-
 How to use uframework ?
 
+    UFramework is a simple framework wich work without database. In fact datas are store in a JSON file in the folder "/data".
 
-    UFramework is a simple framework wich work without database. In fact datas are store in a Json file in the directory "data".
+JSON file
+
+    In order to use uframework with JSON you have to respect this syntaxe in your JSON file :
+
+[
+    [{"name" : "YOUR ARTICLE'S NAME"}, {"description" : "YOUR ARTICLE'S DESCCRIPTION"}],
+    [{"name" : "YOUR SECOND ARTICLE'S NAME"}, {"description" : "YOUR SECOND ARTICLE'S DESCCRIPTION"}] 
+]
