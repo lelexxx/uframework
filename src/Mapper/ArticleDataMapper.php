@@ -64,7 +64,7 @@ class ArticleDataMapper implements DataMapperInterface
 
 		return $this->database->executeQuery($query, array(
 			'name' => $article->getName(),
-			'createdAt' => $article->getDescription()));
+			'description' => $article->getDescription()));
 	}
 	
 	/** Update an article in the database.

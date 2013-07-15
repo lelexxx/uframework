@@ -23,14 +23,9 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
 		
 		$array = $this->getArrayWithJson();
 		
-<<<<<<< HEAD
-		foreach($array as $id => $articleName)
-				$this->articles[] = new Article($id, $articleName);
-=======
 		foreach($array as $id => $article){
 			$this->articles[] = new Article($id, $article[0]["name"], $article[1]["description"]);
 		}
->>>>>>> fix bug and add authentification access
 	}
 	
 	/** Add a location.
@@ -81,11 +76,7 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
 	*/
 	public function getArrayWithJson()
 	{
-<<<<<<< HEAD
-		$json = json_decode(file_get_contents($this->datafile));
-=======
 		$json = json_decode(file_get_contents($this->datafile), true);
->>>>>>> fix bug and add authentification access
 		
 		return $json;
 	}
@@ -98,14 +89,9 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
 	{
 		$array = array();
 		
-<<<<<<< HEAD
-		foreach($this->articles as $id => $location)
-				$array[] = $location->getName();
-=======
 		foreach($this->articles as $id => $location){
 			$array[] = $location->getName();
 		}
->>>>>>> fix bug and add authentification access
 				
 		return json_encode($array);
 	}
