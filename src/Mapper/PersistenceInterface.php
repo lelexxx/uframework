@@ -2,22 +2,39 @@
 
 /** 
 * @file PersistenceInterface.php
-*
-* @author Muetton Julien, Durand William
 */
 
-namespace Model;
+namespace Mapper;
 
 interface PersistenceInterface
 {
-    /**
-     * @param string $name Name of the new location
-     *
-     * @return int Id of the new location
+    /** Check if the object already exist or not.
+     * 
+     * @param Object $object
      */
-    public function create($name);
+    public function persist($object);
+    
+    /** Delete an object from the database.
+    *
+    *@param $object Object
+    *
+    *@return
+    */
+    public function remove($object);
 
-    public function update($id, $name);
+    /** Insert an object in the database.
+    *
+    *@param $object Object
+    *
+    *@return
+    */
+    public function insert($object);
 
-    public function delete($id);
+    /** Update a object in the database.
+    *
+    *@param $object Object
+    *
+    *@return
+    */
+    public function update($object);
 }

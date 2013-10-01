@@ -2,13 +2,11 @@
 
 /** 
 * @file ArticleJsonDataMapper.php
-*
-* @author Ruiz Alexandre <rruiz.alex@gmail.com>
 */
 
 namespace Mapper;
 
-class ArticleJsonDataMapper implements DataMapperInterface
+class ArticleJsonDataMapper implements PersistenceInterface
 {
 	
 	/** Contruct
