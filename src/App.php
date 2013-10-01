@@ -9,7 +9,7 @@ use Http\Response;
 
 class App
 {
-	use \EventDispatcherTrait;
+    use \EventDispatcherTrait;
 	
     const GET    = 'GET';
     const POST   = 'POST';

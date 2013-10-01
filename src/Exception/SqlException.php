@@ -2,8 +2,6 @@
 
 /** 
 * @file SqlException.php
-*
-* @author Ruiz Alexandre <rruiz.alex@gmail.com>
 */
 
 namespace Exception;

@@ -2,8 +2,6 @@
 
 /** 
 * @file Route.php
-*
-* @author Muetton Julien, Durand William
 */
 
 namespace Routing;

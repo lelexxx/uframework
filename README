@@ -14,3 +14,8 @@ JSON file
     [{"name" : "YOUR ARTICLE'S NAME"}, {"description" : "YOUR ARTICLE'S DESCCRIPTION"}],
     [{"name" : "YOUR SECOND ARTICLE'S NAME"}, {"description" : "YOUR SECOND ARTICLE'S DESCCRIPTION"}] 
 ]
+
+
+Tests
+
+    The test part is not functional

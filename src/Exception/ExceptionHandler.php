@@ -2,8 +2,6 @@
 
 /** 
 * @file ExceptionHandler.php
-*
-* @author Muetton Julien, Durand William
 */
 
 namespace Exception;
