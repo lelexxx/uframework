@@ -32,6 +32,7 @@ class ArticleDataMapper implements PersistenceInterface, FinderInterface
         
     }
 
+<<<<<<< HEAD
     /**
      * Retrieve an element by its id.
      *
@@ -41,6 +42,24 @@ class ArticleDataMapper implements PersistenceInterface, FinderInterface
     public function findOneById($id) {
         
     }
+=======
+		return $this->database->executeQuery($query, array(
+			'name' => $article->getName(),
+			'description' => $article->getDescription()));
+	}
+	
+	/** Update an article in the database.
+	*
+	*@param $location Article
+	*
+	*@return array
+	*/
+	public function update($article)
+	{
+		$query = 'UPDATE articles 
+				  SET name = :name, description = :description
+				  WHERE id = :id';
+>>>>>>> 560d50e476f1695f2c2d0d770ad07723490a82ec
 
     /** Render an article peristante
     *
