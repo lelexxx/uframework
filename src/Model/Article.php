@@ -20,11 +20,11 @@ class Article
     * @param name String
     * @param createdAt String
     */
-    public function __construct($id = null, $name, $description = '')
+    public function __construct($id = null, $name = '', $description = '')
     {
-            $this->id = $id;
-            $this->name = $name;
-            $this->description = $description;
+        $this->id = $id;
+        $this->name = $name;
+        $this->description = $description;
     }
 
     /** To get the id.
@@ -33,7 +33,7 @@ class Article
     */
     public function getId()
     {
-            return $this->id;
+        return $this->id;
     }
 
     /** To set the id.
@@ -42,7 +42,7 @@ class Article
     */
     public function setId($id)
     {
-            $this->id = $id;
+        $this->id = $id;
     }
 
     /** To get the name.
@@ -51,7 +51,7 @@ class Article
     */
     public function getName()
     {
-            return $this->name;
+        return $this->name;
     }
 
     /** To set the name.
@@ -60,7 +60,7 @@ class Article
     */
     public function setName($name)
     {
-            $this->name = $name;
+        $this->name = $name;
     }
 
     /** To get the description field.
@@ -69,7 +69,7 @@ class Article
     */
     public function getDescription()
     {
-            return $this->description;
+        return $this->description;
     }
 
     /** To set the description field.
@@ -78,7 +78,7 @@ class Article
     */
     public function setDescription($description)
     {
-            $this->description = $description;
+        $this->description = $description;
     }
 
     /** To test if the article is new
@@ -87,9 +87,6 @@ class Article
     */
     public function isNew()
     {
-            if(null === $this->id)
-                    return true;
-
-            return false;
+        return (null === $this->id);
     }
 }
