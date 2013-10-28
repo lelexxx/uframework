@@ -10,10 +10,11 @@ JSON file
 
     In order to use uframework with JSON you have to respect this syntaxe in your JSON file :
 
-[
-    [{"name" : "YOUR ARTICLE'S NAME"}, {"description" : "YOUR ARTICLE'S DESCCRIPTION"}],
-    [{"name" : "YOUR SECOND ARTICLE'S NAME"}, {"description" : "YOUR SECOND ARTICLE'S DESCCRIPTION"}] 
-]
+{
+	"articles": [
+		{"id": "ID_ARTICLE", "name": "NAME_ARTICLE", "description": "DESCRIPTION_ARTICLE"}
+	]
+}
 
 
 Tests
