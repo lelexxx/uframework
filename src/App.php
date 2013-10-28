@@ -36,8 +36,7 @@ class App
      */
     private $statusCode;
 
-    public function __construct(TemplateEngineInterface $templateEngine, $debug = false)
-    {
+    public function __construct(TemplateEngineInterface $templateEngine, $debug = false){
         $this->templateEngine = $templateEngine;
         $this->debug          = $debug;
 
@@ -52,8 +51,7 @@ class App
      *
      * @return string
      */
-    public function render($template, array $parameters = array(), $statusCode = 200)
-    {
+    public function render($template, array $parameters = array(), $statusCode = 200){
         $this->statusCode = $statusCode;
 
         return $this->templateEngine->render($template, $parameters);
@@ -65,8 +63,7 @@ class App
      *
      * @return App
      */
-    public function get($pattern, $callable)
-    {
+    public function get($pattern, $callable){
         $this->registerRoute(Request::GET, $pattern, $callable);
 
         return $this;
@@ -78,8 +75,7 @@ class App
      *
      * @return App
      */
-    public function post($pattern, $callable)
-    {
+    public function post($pattern, $callable){
         $this->registerRoute(Request::POST, $pattern, $callable);
 
         return $this;
@@ -91,8 +87,7 @@ class App
      *
      * @return App
      */
-    public function put($pattern, $callable)
-    {
+    public function put($pattern, $callable){
         $this->registerRoute(Request::PUT, $pattern, $callable);
 
         return $this;
@@ -104,29 +99,24 @@ class App
      *
      * @return App
      */
-    public function delete($pattern, $callable)
-    {
+    public function delete($pattern, $callable){
         $this->registerRoute(Request::DELETE, $pattern, $callable);
 
         return $this;
     }
 
-    public function run(Request $request = NULL)
-    {
-		if (NULL === $request)
-		{
-			$request = Request::createFromGlobals();
-		}
+    public function run(Request $request = NULL){
+        if (NULL === $request){
+                $request = Request::createFromGlobals();
+        }
 
-		$method = $request->getMethod();
-		$uri    = $request->getUri();
+        $method = $request->getMethod();
+        $uri    = $request->getUri();
 
-		foreach ($this->routes as $route)
-		{
-			if ($route->match($method, $uri))
-			{
-				return $this->process($request, $route);
-			}
+        foreach ($this->routes as $route){
+                if ($route->match($method, $uri)){
+                        return $this->process($request, $route);
+                }
         }
 
         throw new HttpException(404, 'Page Not Found !');
@@ -135,53 +125,46 @@ class App
     /**
      * @param Route $route
      */
-    private function process(Request $request, Route $route)
-    {
-		$this->dispatch('process.before', [ $request ]);
+    private function process(Request $request, Route $route) {
+        $this->dispatch('process.before', [ $request ]);
 		
-        try
-		{
-			http_response_code($this->statusCode);
-			
-			$arguments = $route->getArguments();
-			array_unshift($arguments, $request);
-		
-					$response = call_user_func_array($route->getCallable(), $arguments);
-			if (!$response instanceof Response)
-			{
-				$response = new Response($response);
-			}
+        try{
+            http_response_code($this->statusCode);
 
-			$response->send();
+            $arguments = $route->getArguments();
+            array_unshift($arguments, $request);
+
+            $response = call_user_func_array($route->getCallable(), $arguments);
+            if (!$response instanceof Response){
+                    $response = new Response($response);
+            }
+
+            $response->send();
         }
-		catch (HttpException $e)
-		{
-			throw $e;
+        catch (HttpException $e){
+            throw $e;
         }
-		catch (\Exception $e)
-		{
+        catch (\Exception $e){
             throw new HttpException(500, null, $e);
         }
     }
 
-	/**
-	*@param string $to
-	*/
-	public function redirect($to, $statusCode = 302)
-	{
-	    http_response_code($statusCode);
-	    header(sprintf('Location: %s', $to));
+    /**
+    *@param string $to
+    */
+    public function redirect($to, $statusCode = 302){
+        http_response_code($statusCode);
+        header(sprintf('Location: %s', $to));
 
-	    die;
-	}
+        die;
+    }
 
     /**
      * @param string   $method
      * @param string   $pattern
      * @param callable $callable
      */
-    private function registerRoute($method, $pattern, $callable)
-    {
+    private function registerRoute($method, $pattern, $callable){
         $this->routes[] = new Route($method, $pattern, $callable);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /** 
-* @file Locations.php
+* @file ArticleFinder.php
 */
 
 namespace Model;
@@ -10,52 +10,46 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
 {	
     private $datafile;
 
-    private $articles = array();
+    /** Collection of articles. */
+    protected $articles = array();
 
-    /** Collection of locations. */
-    protected $locations = array();
+    public function __construct($datafile = '/../../data/article.txt'){		
+        $this->datafile = __DIR__.''.$datafile;
 
-    public function __construct($datafile = '/../../data/article.txt')
-    {		
-            $this->datafile = __DIR__.''.$datafile;
+        $array = $this->getArrayWithJson();
 
-            $array = $this->getArrayWithJson();
-
-            foreach($array as $id => $article){
-                    $this->articles[] = new Article($id, $article[0]["name"], $article[1]["description"]);
-            }
+        foreach($array as $id => $article){
+                $this->articles[] = new Article($id, $article[0]["name"], $article[1]["description"]);
+        }
     }
 
-    /** Add a location.
+    /** Add a article.
     *
     * @param mixed $value
     */
-    public function create($value)
-    {
-            $this->articles[] = new Article(count($this->locations), $value);
+    public function create($value){
+        $this->articles[] = new Article(count($this->articles), $value);
 
-            $this->saveOnJson();
+        $this->saveOnJson();
     }
 
-    /** Delete a location by its id.
+    /** Delete a article by its id.
     *
     * @param mixed $id
     */
-    public function delete($id)
-    {		
-            unset($this->locations[$id]);
-            $this->articles = array_values($this->locations);
+    public function delete($id){		
+        unset($this->articles[$id]);
+        $this->articles = array_values($this->articles);
 
-            $this->saveOnJson();
+        $this->saveOnJson();
     }
 
     /** Return all elements.
     *
     *@return array
     */
-    public function findAll()
-    {
-            return $this->articles;
+    public function findAll(){
+        return $this->articles;
     }
 
     /** Retrieve an element by its id.
@@ -63,58 +57,53 @@ class ArticleFinder implements FinderInterface, PersistenceInterface
     * @param mixed $id
     * @return null|mixed
     */
-    public function findOneById($id)
-    {
-            return $this->articles[$id]; 
+    public function findOneById($id){
+        return $this->articles[$id]; 
     }
 
-    /** Get the location in array format by a json format.
+    /** Get the article in array format by a json format.
     *
     * @return array 
     */
-    public function getArrayWithJson()
-    {
-            $json = json_decode(file_get_contents($this->datafile), true);
+    public function getArrayWithJson(){
+        $json = json_decode(file_get_contents($this->datafile), true);
 
-            return $json;
+        return $json;
     }
 
-    /** Get the location in JSon format.
+    /** Get the article in JSon format.
     *
     * @return String 
     */
-    public function getJson()
-    {
-            $array = array();
+    public function getJson(){
+        $array = array();
 
-            foreach($this->articles as $id => $location){
-                    $array[] = $location->getName();
-            }
+        foreach($this->articles as $id => $article){
+                $array[] = $article->getName();
+        }
 
-            return json_encode($array);
+        return json_encode($array);
     }
 
-    /** Save the locations in a file, on JSon format
+    /** Save the articles in a file, on JSon format
     *
     */
-    public function saveOnJson()
-    {
-            $locJson = $this->getJson();
+    public function saveOnJson(){
+        $articleJson = $this->getJson();
 
-            $fp = fopen ($this->datafile, "w+");  
-            fputs($fp, $locJson);  
-            fclose($fp);  
+        $fp = fopen ($this->datafile, "w+");  
+        fputs($fp, $articleJson);  
+        fclose($fp);  
     }
 
-    /** Update a location by its id
+    /** Update a article by its id
     *
     * @param mixed $id
     * @param mixed $value
     */
-    public function update($id, $value)
-    {
-            $this->articles[$id]->setName($value);
+    public function update($id, $value){
+        $this->articles[$id]->setName($value);
 
-            $this->saveOnJson();
+        $this->saveOnJson();
     }
 }

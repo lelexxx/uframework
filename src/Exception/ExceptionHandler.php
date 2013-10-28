@@ -20,8 +20,7 @@ class ExceptionHandler
      */
     private $debug;
 
-    public function __construct(TemplateEngineInterface $templateEngine, $debug = false)
-    {
+    public function __construct(TemplateEngineInterface $templateEngine, $debug = false){
         $this->templateEngine = $templateEngine;
         $this->debug          = $debug;
     }
@@ -29,8 +28,7 @@ class ExceptionHandler
     /**
      * @param Exception $exception
      */
-    public function handle(\Exception $exception)
-    {
+    public function handle(\Exception $exception){
         if ($exception instanceof HttpException) {
             http_response_code($exception->getStatusCode());
         }
@@ -64,8 +62,7 @@ class ExceptionHandler
         ));
     }
 
-    private function excerpt($file, $line)
-    {
+    private function excerpt($file, $line){
         if (is_readable($file)) {
             $content = preg_split('#<br />#', preg_replace('/^<code>(.*)<\/code>$/s', '$1', highlight_file($file, true)));
 

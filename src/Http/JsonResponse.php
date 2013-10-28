@@ -9,8 +9,7 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 class JsonResponse extends Response
 {
-    public function __construct($content, $statusCode = 200)
-    {
+    public function __construct($content, $statusCode = 200){
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
 

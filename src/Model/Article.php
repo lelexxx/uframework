@@ -20,8 +20,7 @@ class Article
     * @param name String
     * @param createdAt String
     */
-    public function __construct($id = null, $name = '', $description = '')
-    {
+    public function __construct($id = null, $name = '', $description = ''){
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
@@ -31,8 +30,7 @@ class Article
     *
     * @return int
     */
-    public function getId()
-    {
+    public function getId(){
         return $this->id;
     }
 
@@ -40,8 +38,7 @@ class Article
     *
     * @param int
     */
-    public function setId($id)
-    {
+    public function setId($id){
         $this->id = $id;
     }
 
@@ -49,8 +46,7 @@ class Article
     *
     * @return String
     */
-    public function getName()
-    {
+    public function getName(){
         return $this->name;
     }
 
@@ -58,8 +54,7 @@ class Article
     *
     * @param String
     */
-    public function setName($name)
-    {
+    public function setName($name){
         $this->name = $name;
     }
 
@@ -67,8 +62,7 @@ class Article
     *
     * @return String
     */
-    public function getDescription()
-    {
+    public function getDescription(){
         return $this->description;
     }
 
@@ -76,8 +70,7 @@ class Article
     *
     * @param String
     */
-    public function setDescription($description)
-    {
+    public function setDescription($description){
         $this->description = $description;
     }
 
@@ -85,8 +78,7 @@ class Article
     *
     *@return boolean
     */
-    public function isNew()
-    {
+    public function isNew(){
         return (null === $this->id);
     }
 }

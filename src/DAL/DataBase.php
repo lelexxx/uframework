@@ -14,21 +14,17 @@ class DataBase extends \PDO
     *
     * @return bool Returns `true` on success, `false` otherwise
     */
-    public function executeQuery($query, $parameters = array())
-    {
-    	try
-    	{
+    public function executeQuery($query, $parameters = array()){
+    	try{
             $stmt = $this->prepare($query);
 
-            foreach ($parameters as $name => $value)
-            {
+            foreach ($parameters as $name => $value){
                     $stmt->bindValue(':'.$name, $value);
             }
 
             $stmt->execute();
         }
-        catch(SqlException $e)
-        {
+        catch(SqlException $e){
             throw new SqlException(500, "Mysql error");
         }
         

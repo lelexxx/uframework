@@ -33,8 +33,7 @@ class Route
      * @param string   $pattern
      * @param callable $callable
      */
-    public function __construct($method, $pattern, $callable)
-    {
+    public function __construct($method, $pattern, $callable){
         $this->method    = $method;
         $this->pattern   = $pattern;
         $this->callable  = $callable;
@@ -47,8 +46,7 @@ class Route
      *
      * @return boolean
      */
-    public function match($method, $uri)
-    {
+    public function match($method, $uri){
         if ($method !== $this->method) {
             return false;
         }
@@ -65,37 +63,32 @@ class Route
     /**
      * @return string
      */
-    public function getMethod()
-    {
+    public function getMethod(){
         return $this->method;
     }
 
     /**
      * @return string
      */
-    public function getPattern()
-    {
+    public function getPattern(){
         return $this->pattern;
     }
 
     /**
      * @return callable
      */
-    public function getCallable()
-    {
+    public function getCallable(){
         return $this->callable;
     }
 
     /**
      * @return array
      */
-    public function getArguments()
-    {
+    public function getArguments(){
         return $this->arguments;
     }
 
-    private function compilePattern()
-    {
+    private function compilePattern(){
         return sprintf('#^%s/?$#', $this->pattern);
     }
 }

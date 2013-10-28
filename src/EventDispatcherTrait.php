@@ -10,8 +10,7 @@ trait EventDispatcherTrait
     * @param String $callable Name of the listener
     * 
     */
-    public function addListener($name, $callable)
-    {
+    public function addListener($name, $callable){
         $this->events[$name][] = $callable;
     }
 
@@ -21,8 +20,7 @@ trait EventDispatcherTrait
     * @param Array $arguments
     * 
     */
-    public function dispatch($name, array $arguments = [])
-    {
+    public function dispatch($name, array $arguments = []){
         foreach ($this->events[$name] as $callable) {
             call_user_func_array($callable, $arguments);
         }

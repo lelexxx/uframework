@@ -14,37 +14,31 @@ class Response
 
     private $headers;
 
-    public function __construct($content, $statusCode = 200, array $headers = array())
-    {
-            $this->content    = $content;
-            $this->statusCode = $statusCode;
-            $this->headers    = array_merge(array('Content-Type' => 'text/html'), $headers);
+    public function __construct($content, $statusCode = 200, array $headers = array()){
+        $this->content    = $content;
+        $this->statusCode = $statusCode;
+        $this->headers    = array_merge(array('Content-Type' => 'text/html'), $headers);
     }
 
-    public function getStatusCode()
-    {
-            return $this->statusCode;
+    public function getStatusCode(){
+        return $this->statusCode;
     }
 
-    public function getContent()
-    {
-            return $this->content;
+    public function getContent(){
+        return $this->content;
     }
 
-    public function sendHeaders()
-    {
-            http_response_code($this->statusCode);
+    public function sendHeaders(){
+        http_response_code($this->statusCode);
 
-            foreach ($this->headers as $name => $value)
-            {
-                header(sprintf('%s: %s', $name, $value));
-            }
+        foreach ($this->headers as $name => $value){
+            header(sprintf('%s: %s', $name, $value));
+        }
     }
 
-    public function send()
-    {
-            $this->sendHeaders();
+    public function send(){
+        $this->sendHeaders();
 
-            echo $this->content;
+        echo $this->content;
     }
 }
