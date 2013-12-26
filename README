@@ -1,6 +1,6 @@
 Test it
 
-    You can test it with php server embed like with this command : php -S localhost:8080 -t web/
+    You can test it with php server embed like with this command : php -S localhost:8080 -t /
 
 How to use uframework ?
 
@@ -11,11 +11,18 @@ JSON file
     In order to use uframework with JSON you have to respect this syntaxe in your JSON file :
 
 {
-	"articles": [
-		{"id": "ID_ARTICLE", "name": "NAME_ARTICLE", "description": "DESCRIPTION_ARTICLE"}
-	]
+    "articles": [
+        {
+            "id": "ID_ARTICLE", 
+            "name": "NAME_ARTICLE", 
+            "description": "DESCRIPTION_ARTICLE"
+        }
+    ]
 }
 
+Apps
+
+	UFramework comes with a frontend application to viewing articles, and a backend application to manage content.
 
 Tests
 

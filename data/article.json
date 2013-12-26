@@ -1,0 +1,9 @@
+{
+    "articles": [
+        {
+            "id": "1", 
+            "name": "First article", 
+            "description": "This is the first article."
+        }
+    ]
+}

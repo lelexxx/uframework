@@ -20,6 +20,12 @@ class ExceptionHandler
      */
     private $debug;
 
+	/** Contruct
+	*
+	* @param TemplateEngineInterface $templateEngine
+	* @param boolean $debug
+	*
+	*/
     public function __construct(TemplateEngineInterface $templateEngine, $debug = false){
         $this->templateEngine = $templateEngine;
         $this->debug          = $debug;
@@ -62,6 +68,12 @@ class ExceptionHandler
         ));
     }
 
+	/** Get the code from the file wich throw the exception
+	*
+	* @param string $file
+	* @param string $line
+	*
+	*/
     private function excerpt($file, $line){
         if (is_readable($file)) {
             $content = preg_split('#<br />#', preg_replace('/^<code>(.*)<\/code>$/s', '$1', highlight_file($file, true)));

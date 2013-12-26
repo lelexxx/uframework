@@ -19,7 +19,7 @@ class Request
     * 
     */
     public static function createFromGlobals(){
-        return new self($_GET, $_POST);
+		return new self($_GET, $_POST);
     }
 
     /** Construct of the class
@@ -45,7 +45,7 @@ class Request
         return $method;
     }
 
-    /**
+    /** Get parameter for the Http Request
     *
     * @param $name String the name of the parameter
     * @param $default String the default value if $name is not found.
@@ -76,5 +76,6 @@ class Request
     * 
     */
     public function guessBestFormat(){
+        return 'text/html';
     }
 }

@@ -26,7 +26,7 @@ class App
      */
     private $templateEngine;
 
-    /**
+    /** Define if debug mode is activated
      * @var boolean
      */
     private $debug;
@@ -35,16 +35,28 @@ class App
      * @var statusCode
      */
     private $statusCode;
+	
+	/**
+	*
+	*/
+	private $urlRoot;
 
-    public function __construct(TemplateEngineInterface $templateEngine, $debug = false){
+	/** Contruct
+	*
+	* @param TemplateEngineInterface $templateEngine
+	* @param boolean $debug
+	*
+	*/
+    public function __construct(TemplateEngineInterface $templateEngine, $urlRoot = '', $debug = false){
         $this->templateEngine = $templateEngine;
         $this->debug          = $debug;
+		$this->urlRoot        = $urlRoot;
 
         $exceptionHandler = new ExceptionHandler($templateEngine, $this->debug);
         set_exception_handler(array($exceptionHandler, 'handle'));
     }
 
-    /**
+    /** Render a view for a given template
      * @param string $template
      * @param array  $parameters
      * @param int    $statusCode
@@ -57,7 +69,7 @@ class App
         return $this->templateEngine->render($template, $parameters);
     }
 
-    /**
+    /** Register a route for GET HTTP verb
      * @param string   $pattern
      * @param callable $callable
      *
@@ -69,7 +81,7 @@ class App
         return $this;
     }
 	
-	/**
+	/** Register a route for POST HTTP verb
      * @param string   $pattern
      * @param callable $callable
      *
@@ -81,7 +93,7 @@ class App
         return $this;
     }
 	
-	/**
+	/** Register a route for PUT HTTP verb
      * @param string   $pattern
      * @param callable $callable
      *
@@ -93,7 +105,7 @@ class App
         return $this;
     }
 	
-	/**
+	/** Register a route for DELETE HTTP verb
      * @param string   $pattern
      * @param callable $callable
      *
@@ -105,24 +117,29 @@ class App
         return $this;
     }
 
+	/** Launch the applicaton
+	*
+	* @param Request $request The HTTP request
+	*
+	*/
     public function run(Request $request = NULL){
         if (NULL === $request){
-                $request = Request::createFromGlobals();
+			$request = Request::createFromGlobals();
         }
 
         $method = $request->getMethod();
         $uri    = $request->getUri();
 
         foreach ($this->routes as $route){
-                if ($route->match($method, $uri)){
-                        return $this->process($request, $route);
-                }
+			if ($route->match($method, $uri)){
+				return $this->process($request, $route);
+			}
         }
 
         throw new HttpException(404, 'Page Not Found !');
     }
 
-    /**
+    /** Execute a route for a specified request
      * @param Route $route
      */
     private function process(Request $request, Route $route) {
@@ -136,7 +153,7 @@ class App
 
             $response = call_user_func_array($route->getCallable(), $arguments);
             if (!$response instanceof Response){
-                    $response = new Response($response);
+				$response = new Response($response);
             }
 
             $response->send();
@@ -149,22 +166,22 @@ class App
         }
     }
 
-    /**
+    /** Redirect application to a given URL
     *@param string $to
     */
     public function redirect($to, $statusCode = 302){
         http_response_code($statusCode);
-        header(sprintf('Location: %s', $to));
+        header(sprintf('Location: %s%s', $this->urlRoot, $to));
 
         die;
     }
 
-    /**
+    /** Add route to the application
      * @param string   $method
      * @param string   $pattern
      * @param callable $callable
      */
     private function registerRoute($method, $pattern, $callable){
-        $this->routes[] = new Route($method, $pattern, $callable);
+        $this->routes[] = new Route($method, $this->urlRoot.''.$pattern, $callable);
     }
 }

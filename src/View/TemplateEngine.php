@@ -13,6 +13,9 @@ class TemplateEngine implements TemplateEngineInterface
      */
     private $templateDir;
 
+	/** Construct
+	*
+	*/
     public function __construct($templateDir){
         $this->templateDir = $templateDir;
     }
