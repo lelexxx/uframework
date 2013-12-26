@@ -20,7 +20,7 @@ class ArticleJsonDataMapper implements FinderInterface, PersistenceInterface
         $this->datafile = __DIR__.''.$datafile;
 
         $array = $this->getArrayWithJson();
-		
+
         foreach($array->articles as $article){
             $this->articles[$article->id] = new Article($article->id, $article->name, $article->description);
         }
@@ -38,10 +38,33 @@ class ArticleJsonDataMapper implements FinderInterface, PersistenceInterface
 
     /** Return all articles.
     *
-    *@return array
+    * @param String $datafile
     */
+    public function __construct($datafile = '/../../data/article.json'){		
+        $this->datafile = __DIR__.''.$datafile;
+
+        $array = $this->getArrayWithJson();
+		
+        foreach($array->articles as $article){
+            $this->articles[$article->id] = new Article($article->id, $article->name, $article->description);
+        }
+    }
+
+    /** Add a article.
+    *
+    * @param Article $value
+    */
+    public function insert($article){
+        $this->articles[$article->getId()] = $article;
+
+        $this->saveOnJson();
+    }
+
+    /** Return all articles.
+	*
+	*/
     public function findAll($criterias = null){
-		return $this->articles;
+        return $this->articles;
     }
 
     /** Retrieve an article by its id.
@@ -108,7 +131,7 @@ class ArticleJsonDataMapper implements FinderInterface, PersistenceInterface
 
         $this->saveOnJson();
     }
-	
+
     /** Update an article by its id
     *
     * @param mixed $id
