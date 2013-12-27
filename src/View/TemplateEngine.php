@@ -8,7 +8,7 @@ namespace View;
 
 class TemplateEngine implements TemplateEngineInterface
 {
-    /**
+    /** Directory where templates are stored
      * @var string
      */
     private $templateDir;
@@ -23,8 +23,25 @@ class TemplateEngine implements TemplateEngineInterface
     /**
      * {@inheritDoc}
      */
-    public function render($template, array $parameters = array()){
-        extract($parameters);
+    public function render($template, array $parameters = array(), $layout = null){
+        if(null !== $layout){
+			$param = array(
+				'parameters' => $parameters,
+				'templateEngine' => $this,
+				'templateBody' => $template
+			);
+			return $this->renderBody($layout, $param);
+		}
+		else{
+			return $this->renderBody($template, $parameters);
+		}
+    }
+	
+	/**
+    *
+    */
+    public function renderBody($template, array $parameters = array()){	
+		extract($parameters);
 
         if (false === $this->isAbsolutePath($template)) {
             $template = $this->templateDir . DIRECTORY_SEPARATOR . $template;
@@ -36,6 +53,9 @@ class TemplateEngine implements TemplateEngineInterface
         return ob_get_clean();
     }
 
+	/**
+	*
+	*/
     private function isAbsolutePath($file){
         if (strspn($file, '/\\', 0, 1)
             || (strlen($file) > 3 && ctype_alpha($file[0])

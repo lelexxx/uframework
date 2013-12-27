@@ -12,30 +12,6 @@ class ArticleJsonDataMapper implements FinderInterface, PersistenceInterface
     /** Collection of articles. */
     private $articles = array();
 
-    /** Construct
-    *
-    * @param String $datafile
-    */
-    public function __construct($datafile = '/../../data/article.json'){		
-        $this->datafile = __DIR__.''.$datafile;
-
-        $array = $this->getArrayWithJson();
-
-        foreach($array->articles as $article){
-            $this->articles[$article->id] = new Article($article->id, $article->name, $article->description);
-        }
-    }
-
-    /** Add a article.
-    *
-    * @param Article $value
-    */
-    public function insert($article){
-        $this->articles[$article->getId()] = $article;
-
-        $this->saveOnJson();
-    }
-
     /** Return all articles.
     *
     * @param String $datafile

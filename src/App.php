@@ -63,10 +63,10 @@ class App
      *
      * @return string
      */
-    public function render($template, array $parameters = array(), $statusCode = 200){
+    public function render($template, array $parameters = array(), $layout = null, $statusCode = 200){
         $this->statusCode = $statusCode;
 
-        return $this->templateEngine->render($template, $parameters);
+        return $this->templateEngine->render($template, $parameters, $layout);
     }
 
     /** Register a route for GET HTTP verb

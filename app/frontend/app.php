@@ -50,7 +50,7 @@ $app->get('/articles', function(Request $request) use ($app){
 		$mapper = new ArticleJsonDataMapper();
 		$art = $mapper->findAll();
 		
-		return $app->render('articles.php', array("articles" => $art));
+		return $app->render('articles.php', array("layout" => 'layout.php', "articles" => $art), 'layout.php');
 	});
 	
 //Get one article with its id
@@ -67,7 +67,7 @@ $app->get('/articles/(\d+)', function(Request $request, $id) use ($app){
 	
 //Access to the login form
 $app->get('/login', function(Request $request) use ($app){
-		return $app->render('login.php', array());
+		return $app->render('login.php');
 	});
 	
 //Access to the login form
