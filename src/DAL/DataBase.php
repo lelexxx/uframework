@@ -8,7 +8,8 @@ namespace DAL;
 
 class DataBase extends \PDO
 {		
-    /**
+    /** Secures and executes a given query
+	*
     * @param string $query
     * @param array  $parameters
     *
