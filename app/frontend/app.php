@@ -15,9 +15,9 @@ $app->addListener('process.before', function(Request $req) use ($app, $urlRoot) 
     session_start();
 
     $allowed = [
-		$urlRoot.'/' => [ Request::GET ],
+        $urlRoot.'/' => [ Request::GET ],
         $urlRoot.'/login' => [ Request::GET ],
-		$urlRoot.'/accessAdmin' => [ Request::GET ],
+        $urlRoot.'/accessAdmin' => [ Request::GET ],
         $urlRoot.'/articles' => [ Request::GET ],
         $urlRoot.'/articles/(\d+)' => [ Request::GET ],
     ];
@@ -42,55 +42,55 @@ $app->addListener('process.before', function(Request $req) use ($app, $urlRoot) 
 
 //Index
 $app->get('/', function () use ($app){
-		return $app->redirect('/articles');
-	});
+    return $app->redirect('/articles');
+});
 
 // Get article list
-$app->get('/articles', function(Request $request) use ($app){
-		$mapper = new ArticleJsonDataMapper();
-		$art = $mapper->findAll();
-		
-		return $app->render('articles.php', array("layout" => 'layout.php', "articles" => $art), 'layout.php');
-	});
+$app->get('/articles', function() use ($app){
+    $mapper = new ArticleJsonDataMapper();
+    $art = $mapper->findAll();
+
+    return $app->render('articles.php', array("layout" => 'layout.php', "articles" => $art), 'layout.php');
+});
 	
 //Get one article with its id
 $app->get('/articles/(\d+)', function(Request $request, $id) use ($app){
-		$model = new ArticleJsonDataMapper();
-		$art = $model->findOneById($id);
-		
-		if(null === $art){
-			throw new HttpException(404, "Article not found");
-		}
+    $model = new ArticleJsonDataMapper();
+    $art = $model->findOneById($id);
 
-		return $app->render('article.php', array("id" => $id, "article" => $art));
-	});
+    if(null === $art){
+        throw new HttpException(404, "Article not found");
+    }
+
+    return $app->render('article.php', array("id" => $id, "article" => $art));
+});
 	
 //Access to the login form
-$app->get('/login', function(Request $request) use ($app){
-		return $app->render('login.php');
-	});
+$app->get('/login', function() use ($app){
+    return $app->render('login.php');
+});
 	
 //Access to the login form
 $app->get('/accessAdmin', function(Request $request) use ($app){
-		$login = $request->getParameter('login', null);
-		$password = $request->getParameter('password', null);
-		
-		if(null === $login){
-			throw new HttpException(400, "Login is mandatory !");
-		}
-		
-		if(null === $password){
-			throw new HttpException(400, "Password is mandatory !");
-		}
-		
-		if($login !== $password){
-			$app->redirect('/login');
-		}
-		
-		session_start();
-		$_SESSION['is_authenticated'] = true;
-		
-		$app->redirect('/admin');
-	});
+    $login = $request->getParameter('login', null);
+    $password = $request->getParameter('password', null);
+
+    if(null === $login){
+        throw new HttpException(400, "Login is mandatory !");
+    }
+
+    if(null === $password){
+        throw new HttpException(400, "Password is mandatory !");
+    }
+
+    if($login !== $password){
+        $app->redirect('/login');
+    }
+
+    session_start();
+    $_SESSION['is_authenticated'] = true;
+
+    $app->redirect('/admin');
+});
 	
 return $app;
