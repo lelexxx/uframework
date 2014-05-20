@@ -50,7 +50,7 @@ $app->get('/articles', function() use ($app){
     $mapper = new ArticleJsonDataMapper();
     $art = $mapper->findAll();
 
-    return $app->render('articles.php', array("layout" => 'layout.php', "articles" => $art), 'layout.php');
+    return $app->render('articles.php', array("articles" => $art), 'layout.php');
 });
 	
 //Get one article with its id
